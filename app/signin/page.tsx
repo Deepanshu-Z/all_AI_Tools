@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,8 +12,44 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { signUpSchema, signUpInput } from "@/schemas/signUpScehma";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 
 export default function page() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<signUpInput>({
+    resolver: zodResolver(signUpSchema),
+  });
+
+  const onSubmit = async (data: signUpInput) => {
+    console.log("@@@HEY", data);
+    try {
+      const res = await axios.post(
+        "/api/auth",
+        {
+          email: data.email,
+          password: data.password,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      console.log("Printing response: ", res.data);
+      if (res.status === 200) {
+        console.log(res);
+      } else {
+        console.log("ERROR");
+      }
+    } catch (err: any) {
+      console.log("Error on client onSubmit (SignUp form): ", err);
+    }
+  };
+
   return (
     <div className="flex h-screen justify-center items-center">
       <Card className="w-full max-w-sm">
@@ -28,36 +65,33 @@ export default function page() {
           </CardAction>
         </CardHeader>
         <CardContent>
-          <form>
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
-                </div>
-                <Input id="password" type="password" required />
-              </div>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-4 w-full max-w-md mx-auto p-6 border rounded"
+          >
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" {...register("email")} />
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email.message}</p>
+              )}
             </div>
+
+            <div>
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" type="password" {...register("password")} />
+              {errors.password && (
+                <p className="text-red-500 text-sm">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              {isSubmitting ? "Login in..." : "Log in"}
+            </Button>
           </form>
         </CardContent>
         <CardFooter className="flex-col gap-2">
-          <Button type="submit" className="w-full">
-            Login
-          </Button>
           <Button variant="outline" className="w-full">
             Login with Google
           </Button>
