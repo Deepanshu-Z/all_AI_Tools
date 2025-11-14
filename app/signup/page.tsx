@@ -11,22 +11,27 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export default function CardDemo() {
+export default async function page() {
   return (
     <div className="flex h-screen justify-center items-center">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
-          <CardDescription>
-            Enter your email below to login to your account
-          </CardDescription>
-          <CardAction>
-            <Button variant="link">Sign Up</Button>
-          </CardAction>
+          <CardTitle>Signup to your account</CardTitle>
+          <CardDescription>Enter your details below to signup</CardDescription>
         </CardHeader>
+
         <CardContent>
           <form>
             <div className="flex flex-col gap-6">
+              <div className="grid gap-2">
+                <Label htmlFor="username">Username</Label>
+                <Input
+                  id="username"
+                  type="text"
+                  placeholder="enter username here.."
+                  required
+                />
+              </div>
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -38,25 +43,25 @@ export default function CardDemo() {
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
+                  <Label htmlFor="password">Set Password</Label>
                 </div>
                 <Input id="password" type="password" required />
+              </div>
+
+              <div className="grid gap-2">
+                <Label htmlFor="dob">DOB</Label>
+                <Input id="dob" type="date" required />
               </div>
             </div>
           </form>
         </CardContent>
+
         <CardFooter className="flex-col gap-2">
           <Button type="submit" className="w-full">
-            Login
+            SignUp
           </Button>
           <Button variant="outline" className="w-full">
-            Login with Google
+            SignUp with Google
           </Button>
         </CardFooter>
       </Card>
