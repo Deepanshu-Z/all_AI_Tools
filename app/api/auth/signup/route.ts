@@ -24,6 +24,7 @@ export async function POST(req: NextRequest) {
       password: hashedPassword,
       username,
       dob,
+      provider: "simple",
     });
     return NextResponse.json({
       message: "User Successfully Registered",
