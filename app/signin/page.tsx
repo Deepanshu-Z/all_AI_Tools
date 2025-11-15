@@ -12,39 +12,29 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { signUpSchema, signUpInput } from "@/schemas/signUpScehma";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { signInInput, signInSchema } from "@/schemas/signInSchema";
+import { signIn } from "next-auth/react";
 
 export default function page() {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<signUpInput>({
-    resolver: zodResolver(signUpSchema),
+  } = useForm<signInInput>({
+    resolver: zodResolver(signInSchema),
   });
 
-  const onSubmit = async (data: signUpInput) => {
-    console.log("@@@HEY", data);
+  const onSubmit = async (data: signInInput) => {
     try {
-      const res = await axios.post(
-        "/api/auth",
-        {
-          email: data.email,
-          password: data.password,
-        },
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      console.log("Printing response: ", res.data);
-      if (res.status === 200) {
-        console.log(res);
-      } else {
-        console.log("ERROR");
-      }
+      const res = await signIn("credentials", {
+        redirect: true,
+        callbackUrl: "/home",
+        email: data.email,
+        password: data.password,
+      });
     } catch (err: any) {
       console.log("Error on client onSubmit (SignUp form): ", err);
     }
@@ -92,7 +82,11 @@ export default function page() {
           </form>
         </CardContent>
         <CardFooter className="flex-col gap-2">
-          <Button variant="outline" className="w-full">
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+          >
             Login with Google
           </Button>
         </CardFooter>

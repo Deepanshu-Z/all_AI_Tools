@@ -13,13 +13,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { signUpSchema, signUpInput } from "@/schemas/signUpScehma";
+import { signUpSchema, signUpInput } from "@/schemas/signUpSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 // import { Router, useRouter } from "next/router";
 import { useState } from "react";
 import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 export default function page() {
   const {
@@ -29,7 +31,7 @@ export default function page() {
   } = useForm<signUpInput>({
     resolver: zodResolver(signUpSchema),
   });
-
+  const router = useRouter();
   const [msg, setMsg] = useState();
 
   const onSubmit = async (data: signUpInput) => {
@@ -37,7 +39,7 @@ export default function page() {
       const res = await axios.post(
         "/api/auth/signup",
         {
-          dob: data.dob,
+          dob: data.dob || "",
           email: data.email,
           password: data.password,
           username: data.username,
@@ -49,12 +51,16 @@ export default function page() {
 
       console.log("Printing response: ", res.data);
       if (res.status === 200) {
-        redirect("/signin");
+        router.push("/signin");
       } else {
         setMsg(res.data);
       }
     } catch (err: any) {
-      console.log("Error on client onSubmit (SignUp form): ", err);
+      setMsg(err?.response?.data.error);
+      console.log(
+        "Error on client onSubmit (SignUp form): ",
+        err?.response?.data
+      );
     }
   };
 
@@ -64,6 +70,11 @@ export default function page() {
         <CardHeader>
           <CardTitle>Signup to your account</CardTitle>
           <CardDescription>Enter your details below to signup</CardDescription>
+          <CardAction>
+            <Link href="/signin">
+              <Button variant="link">Log In</Button>
+            </Link>
+          </CardAction>
         </CardHeader>
 
         <CardContent>
@@ -80,7 +91,6 @@ export default function page() {
                 </p>
               )}
             </div>
-
             <div>
               <Label htmlFor="email">Email</Label>
               <Input id="email" type="email" {...register("email")} />
@@ -88,7 +98,6 @@ export default function page() {
                 <p className="text-red-500 text-sm">{errors.email.message}</p>
               )}
             </div>
-
             <div>
               <Label htmlFor="password">Password</Label>
               <Input id="password" type="password" {...register("password")} />
@@ -98,7 +107,6 @@ export default function page() {
                 </p>
               )}
             </div>
-
             <div>
               <Label htmlFor="dob">Date of Birth</Label>
               <Input id="dob" type="date" {...register("dob")} />
@@ -106,15 +114,19 @@ export default function page() {
                 <p className="text-red-500 text-sm">{errors.dob.message}</p>
               )}
             </div>
-
             <Button type="submit" className="w-full" disabled={isSubmitting}>
               {isSubmitting ? "Signing up..." : "Sign Up"}
             </Button>
+            {msg && <p className="text-center text-red-500">{msg}</p>}
           </form>
         </CardContent>
 
         <CardFooter className="flex-col gap-2">
-          <Button variant="outline" className="w-full">
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() => signIn("google", { callbackUrl: "/signin" })}
+          >
             SignUp with Google
           </Button>
         </CardFooter>
