@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import AppHeader from "./_components/AppHeader";
 import { Button } from "@/components/ui/button";
+
 const products = [
   {
     productName: "AI Image Generation",
