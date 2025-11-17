@@ -1,148 +1,160 @@
-import { Button } from "@/components/ui/button";
+"use client";
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import { Boxes } from "@/components/ui/background-boxes";
+import AppHeader from "./_components/AppHeader";
+import { Button } from "@/components/ui/button";
+const products = [
+  {
+    productName: "AI Image Generation",
+    productDescription:
+      "Create high-quality images for branding, marketing, UI, art and creative design.",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/12394/12394665.png",
+  },
+  {
+    productName: "AI Video Generation",
+    productDescription:
+      "Generate full videos from text, audio or images with cinematic quality.",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/11622/11622566.png",
+  },
+  {
+    productName: "AI Coding Assistant",
+    productDescription:
+      "Write, fix, refactor and generate code automatically using advanced LLMs.",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/10885/10885228.png",
+  },
+  {
+    productName: "AI Voice Generation",
+    productDescription:
+      "Generate ultra-realistic voices for content, characters, ads and narration.",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/12814/12814457.png",
+  },
+  {
+    productName: "AI Speech-to-Text",
+    productDescription:
+      "Convert any audio or video into accurate transcription instantly.",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/12791/12791191.png",
+  },
+  {
+    productName: "AI Search Engine",
+    productDescription:
+      "Research anything with real-time data, citations and fast answers.",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/10828/10828496.png",
+  },
+  {
+    productName: "AI Automation & Agents",
+    productDescription:
+      "Automate workflows, build agents and let AI complete multi-step tasks.",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/12606/12606961.png",
+  },
+  {
+    productName: "AI Document Intelligence",
+    productDescription:
+      "Analyze large PDFs, contracts, tables and extract structured insights.",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/10470/10470718.png",
+  },
+  {
+    productName: "AI Chat & Assistants",
+    productDescription:
+      "Conversational LLMs that help in learning, support and productivity.",
+    imageUrl: "https://cdn-icons-png.flaticon.com/512/10836/10836257.png",
+  },
+];
 
-export default function Home() {
-  const products = [
-    {
-      productName: "OpenAI ChatGPT",
-      productDescription:
-        "Advanced LLM for coding, writing, automation, and business workflows.",
-      imageUrl:
-        "https://upload.wikimedia.org/wikipedia/commons/0/04/OpenAI_Logo.svg", // :contentReference[oaicite:0]{index=0}
-    },
-    {
-      productName: "Anthropic Claude",
-      productDescription:
-        "Strong reasoning-focused LLM used heavily in enterprise and research.",
-      imageUrl:
-        "https://upload.wikimedia.org/wikipedia/commons/4/4c/Claude_AI_logo.svg", // :contentReference[oaicite:1]{index=1}
-    },
-    {
-      productName: "Google Gemini",
-      productDescription:
-        "Google’s multimodal AI model integrated into search, workspace and android.",
-      imageUrl: "", // Gemini ka official logo koi public SVG nahi easily mil raha abhi
-    },
-    {
-      productName: "Meta Llama",
-      productDescription:
-        "Open-source LLM widely used in startups, custom training, and local inference.",
-      imageUrl: "", // Llama ka bhi koi consistent logo link nahi mil paaya reliable source se
-    },
-    {
-      productName: "Microsoft Copilot",
-      productDescription:
-        "AI suite integrated into Windows, Office, GitHub, and cloud workflows.",
-      imageUrl: "", // Copilot ki brand assets publicly distributed images limited hain
-    },
-    {
-      productName: "GitHub Copilot",
-      productDescription:
-        "AI coding assistant used for autocompletion and code generation.",
-      imageUrl: "", // GitHub Copilot ka specific logo link saaf stable source pe nahi mil paaya
-    },
-    {
-      productName: "Midjourney",
-      productDescription:
-        "AI image generation for marketing, design, and creative work.",
-      imageUrl:
-        "https://upload.wikimedia.org/wikipedia/commons/a/a4/Midjourney_Emblem_%28in-colour%29.svg", // :contentReference[oaicite:2]{index=2}
-    },
-    {
-      productName: "Stable Diffusion",
-      productDescription:
-        "Open-source image generation model for custom pipelines.",
-      imageUrl:
-        "https://stablediffusionweb.com/image/26459060-stability-ai-s-stable-diffusion-logo", // :contentReference[oaicite:3]{index=3}
-    },
-    {
-      productName: "Hugging Face",
-      productDescription:
-        "Platform offering ML models, datasets, and inference APIs.",
-      imageUrl:
-        "https://huggingface.co/datasets/huggingface/brand-assets/resolve/main/logo.svg", // :contentReference[oaicite:4]{index=4}
-    },
-    {
-      productName: "ElevenLabs",
-      productDescription: "Best-in-class AI voice generation + text-to-speech.",
-      imageUrl: "", // ElevenLabs ka official logo public vector link mujhe abhi nahi mila
-    },
-    {
-      productName: "Perplexity AI",
-      productDescription: "AI search engine for research-grade answers.",
-      imageUrl: "", // Perplexity ki branding mein publicly accessible simple logo link limited hai
-    },
-    {
-      productName: "Notion AI",
-      productDescription:
-        "Productivity assistant for writing, wiki creation, and team workflows.",
-      imageUrl: "", // Notion ka generic Notion logo use hota hai, AI-specific nahi alag logo mil paaya nahi
-    },
-    {
-      productName: "Replit AI",
-      productDescription:
-        "AI for building and deploying code quickly in the cloud.",
-      imageUrl: "", // Replit AI ka koi official distinct logo link mujhe abhi nahi mila
-    },
-    {
-      productName: "Figma AI",
-      productDescription: "AI design assistance for UI/UX workflows.",
-      imageUrl: "", // Figma ka AI-product ke liye separate logo widely available nahi hai
-    },
-  ];
-
+export default function page() {
   return (
-    <div className=" flex flex-col gap-10 min-h-screen w-full items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <div className="h-screen w-full flex items-center justify-center bg-slate-900 relative overflow-hidden">
-        {/* MASK LAYER */}
-        <div className="absolute inset-0 bg-slate-900 z-10 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
-
-        {/* ANIMATION BACKGROUND */}
-        <Boxes />
-
-        {/* CONTENT */}
-        <div className="relative z-20 flex flex-col items-center px-4">
-          <h1 className="text-xl md:text-4xl text-white font-bold">AIOneHub</h1>
-
-          <p className="text-center mt-2 text-neutral-300">
-            Every AI tool bundled for your workflow.
-          </p>
+    <div className="bg-gray-900 h-full">
+      {/* Header */}
+      <AppHeader />
+      {/* Hero Section */}
+      <div className="relative isolate px-6 lg:px-8">
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
+        >
+          <div
+            style={{
+              clipPath:
+                "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
+            }}
+            className="relative left-[calc(50%-11rem)] aspect-1155/678 w-144.5 -translate-x-1/2 rotate-30 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-288.75"
+          />
+        </div>
+        <div className="mx-auto max-w-2xl   ">
+          <div className="hidden sm:mb-8 pt-40 sm:flex sm:justify-center">
+            <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-400 ring-1 ring-white/10 hover:ring-white/20">
+              Announcing our next round of funding.{" "}
+              <a href="#" className="font-semibold text-indigo-400">
+                <span aria-hidden="true" className="absolute inset-0" />
+                Read more <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </div>
+          <div className="text-center">
+            <h1 className="text-5xl font-semibold tracking-tight text-balance text-white sm:text-7xl">
+              All AI Tools in One Place
+            </h1>
+            <p className="mt-8 text-lg font-medium text-pretty text-gray-400 sm:text-xl/8">
+              Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
+              lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat.
+            </p>
+            <div className="mt-10 flex items-center justify-center gap-x-6">
+              <a
+                href="#"
+                className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+              >
+                Get started
+              </a>
+              <a href="#" className="text-sm/6 font-semibold text-white">
+                Learn more <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
+        >
+          <div
+            style={{
+              clipPath:
+                "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
+            }}
+            className="relative left-[calc(50%+3rem)] aspect-1155/678 w-144.5 -translate-x-1/2 bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-288.75"
+          />
         </div>
       </div>
-
-      <div className=" w-full grid grid-cols-3 justify-center gap-4">
+      {/* Product List */}
+      <div className=" w-full grid grid-cols-3 justify-center gap-4 p-10">
         {products.map((product, key) => (
-          /* FIX 2:
-            - Removed 'w-full'.
-            - Kept 'max-w-sm' (this is a good max width).
-            - Added 'flex-grow' (so it can grow) and 'flex-basis-[350px]' 
-              (so it has a base size, forcing it to wrap).
-          */
-          <div key={key} className="max-w-sm flex-grow flex-basis-[350px]">
-            <Card>
+          <div key={key} className=" max-w-sm flex-grow flex-basis-[350px]">
+            <Card className="bg-gray-900">
               <CardHeader>
                 <img
                   src={product.imageUrl}
                   alt={product.productName}
-                  className="w-full h-40 object-cover rounded-md"
+                  height={50}
+                  width={100}
+                  className=" w-full h-40 object-cover rounded-md"
                 />
 
-                <CardTitle>{product.productName}</CardTitle>
+                <CardTitle className="text-white">
+                  {product.productName}
+                </CardTitle>
                 <CardDescription>{product.productDescription}</CardDescription>
               </CardHeader>
 
               <CardContent>
-                <Button className="w-full">View More</Button>
+                <Button
+                  variant={"default"}
+                  className="w-full bg-indigo-500 cursor-pointer hover:bg-indigo-700"
+                >
+                  View More
+                </Button>
               </CardContent>
             </Card>
           </div>
