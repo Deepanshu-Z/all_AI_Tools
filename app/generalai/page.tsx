@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
+
+import { Spinner } from "@/components/ui/spinner";
 type Messages = {
   role: "user" | "bot";
   content: string;
@@ -10,8 +12,10 @@ type Messages = {
 export default function page() {
   const [msg, setMsg] = useState<Messages[]>([]);
   const [input, setInput] = useState<string>();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleClick = async () => {
+    setLoading(true);
     if (!input || input.trim() === "") return;
     setMsg((prev) => [
       ...prev,
@@ -41,26 +45,22 @@ export default function page() {
 
       const chunk = decoder.decode(value, { stream: true });
 
-      setMsg((prev) => [
-        ...prev,
-        {
-          role: "bot",
-          content: chunk,
-        },
-      ]);
+      setMsg((prev) => {
+        setLoading(false);
+        const lastMessage = prev[prev.length - 1];
+
+        if (lastMessage && lastMessage.role === "bot") {
+          const updatedMessages = [...prev];
+          updatedMessages[prev.length - 1] = {
+            ...lastMessage,
+            content: lastMessage.content + chunk,
+          };
+          return updatedMessages;
+        } else {
+          return [...prev, { role: "bot", content: chunk }];
+        }
+      });
     }
-
-    //(WIHOUT STREAMING
-    // const res = await axios.post("/api/ai", { query });
-
-    // console.log(res.data);
-    // setMsg((prev) => [
-    //   ...prev,
-    //   {
-    //     role: "bot",
-    //     content: res.data,
-    //   },
-    // ]);)
   };
 
   return (
@@ -79,6 +79,14 @@ export default function page() {
           </div>
         ))}
       </div>
+      {loading ? (
+        <div className="flex items-center justify-center gap-2">
+          <h3 className="text-2xl">Deep thinking..</h3>
+          <Spinner className="size-6" />
+        </div>
+      ) : (
+        ""
+      )}
 
       <Textarea
         placeholder="Type your message here."
