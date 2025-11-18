@@ -49,7 +49,7 @@ export default function page() {
             Enter your email below to login to your account
           </CardDescription>
           <CardAction>
-            <Link href="/signup">
+            <Link href="/auth/signup">
               <Button variant="link">Sign Up</Button>
             </Link>
           </CardAction>
@@ -85,7 +85,7 @@ export default function page() {
           <Button
             variant="outline"
             className="w-full"
-            onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+            onClick={() => signIn("google", { callbackUrl: "/" })}
           >
             Login with Google
           </Button>

@@ -17,7 +17,6 @@ import { signUpSchema, signUpInput } from "@/schemas/signUpSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-// import { Router, useRouter } from "next/router";
 import { useState } from "react";
 import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
@@ -51,7 +50,7 @@ export default function page() {
 
       console.log("Printing response: ", res.data);
       if (res.status === 200) {
-        router.push("/signin");
+        router.push("/auth/signin");
       } else {
         setMsg(res.data);
       }
@@ -71,7 +70,7 @@ export default function page() {
           <CardTitle>Signup to your account</CardTitle>
           <CardDescription>Enter your details below to signup</CardDescription>
           <CardAction>
-            <Link href="/signin">
+            <Link href="/auth/signin">
               <Button variant="link">Log In</Button>
             </Link>
           </CardAction>
