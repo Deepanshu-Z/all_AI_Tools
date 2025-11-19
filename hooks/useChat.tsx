@@ -1,6 +1,9 @@
 "use client";
 
+import axios from "axios";
+import { useParams, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 export function useChat() {
   const [msgs, setMsgs] = useState<{ role: "user" | "bot"; content: string }[]>(
@@ -8,6 +11,22 @@ export function useChat() {
   );
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const getFrameDetails = async () => {
+    const generateFrameId = () => {
+      return Math.floor(10000 + Math.random() * 90000);
+    };
+
+    const projectId = "e26d8f1a-42ca-429e-8404-e59a87abebdd";
+    const frameId = 1234;
+    const response = await axios.post(`/api/frame`, {
+      msgs,
+      projectId,
+      frameId,
+    });
+
+    console.log("CHECK DB MSG UPDATED", response.statusText);
+  };
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -50,6 +69,7 @@ export function useChat() {
         // Otherwise add new bot message
         return [...prev, { role: "bot", content: botMessage }];
       });
+      getFrameDetails();
     }
 
     setLoading(false);

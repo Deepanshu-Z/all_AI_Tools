@@ -1,6 +1,6 @@
 import { ChatProvider } from "@/context/ChatContent";
-import { ChatInput } from "@/components/ui/chat/ChatInput";
-import { ChatMessages } from "@/components/ui/chat/ChatMessage";
+import { ChatInput } from "@/components/chat/ChatInput";
+import { ChatMessages } from "@/components/chat/ChatMessage";
 
 export default function Page() {
   return (

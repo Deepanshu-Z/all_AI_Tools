@@ -3,14 +3,14 @@ import { useChatContext } from "@/context/ChatContent";
 import { Spinner } from "@/components/ui/spinner";
 
 export function ChatMessages() {
-  const { msg, loading } = useChatContext();
+  const { msgs, loading } = useChatContext();
 
   return (
-    <div>
-      {msg.map((m, i) => (
+    <div className=" w-full flex flex-col">
+      {msgs.map((m, i) => (
         <div
           key={i}
-          className={`p-2 m-1 rounded-lg ${
+          className={`p-2 m-1 rounded-lg w-1/2 ${
             m.role === "user"
               ? "self-end bg-gray-300"
               : "self-start bg-gray-400"

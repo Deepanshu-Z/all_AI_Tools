@@ -16,3 +16,21 @@ export const usersTable = pgTable("users", {
   credits: integer().default(2),
   provider: varchar("provider").notNull(),
 });
+
+export const projectsTable = pgTable("projects", {
+  id: text().primaryKey(),
+  userId: integer().references(() => usersTable.id),
+  title: varchar().notNull(),
+});
+
+export const framesTable = pgTable("frames", {
+  id: varchar().primaryKey(),
+  projectId: text().references(() => projectsTable.id),
+  title: varchar(),
+});
+
+export const messagesTable = pgTable("messages", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  frameId: varchar().references(() => framesTable.id),
+  message: json(),
+});
