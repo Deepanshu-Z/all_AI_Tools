@@ -20,13 +20,12 @@ export const usersTable = pgTable("users", {
 export const projectsTable = pgTable("projects", {
   id: text().primaryKey(),
   userId: integer().references(() => usersTable.id),
-  title: varchar().notNull(),
+  title: varchar(),
 });
 
 export const framesTable = pgTable("frames", {
   id: varchar().primaryKey(),
   projectId: text().references(() => projectsTable.id),
-  title: varchar(),
 });
 
 export const messagesTable = pgTable("messages", {

@@ -4,34 +4,35 @@ import { and, eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { projectId, msgs, frameId } = await req.json();
-
+  const { projectId, frameId } = await req.json();
   try {
-    const findProject = await db.insert(projectsTable).values({
-      id: projectId,
-      userId: 0,
-      title: "Okk projects table",
-    });
+    const findProject = await db
+      .select()
+      .from(projectsTable)
+      .where(eq(projectsTable.id, projectId));
+    if (!findProject) {
+      const newProject = await db.insert(projectsTable).values({
+        id: projectId,
+        userId: 0,
+      });
 
-    const frame = await db.insert(framesTable).values({
-      id: frameId,
-      projectId,
-      title: "HI TESTING!!",
-    });
+      const newFrame = await db.insert(framesTable).values({
+        id: frameId,
+        projectId,
+      });
+    } else {
+      const frames = await db
+        .select()
+        .from(framesTable)
+        .where(eq(framesTable.projectId, projectId));
+      const msgs = await db
+        .select()
+        .from(messagesTable)
+        .where(eq(messagesTable.frameId, frames[0].id));
 
-    const message = await db.insert(messagesTable).values({
-      frameId: frameId,
-      message: msgs,
-    });
+      return NextResponse.json({ message: "Frame details returned.", msgs });
+    }
   } catch (error) {
-    console.error(error);
-    return Response.json(
-      {
-        error: error instanceof Error ? error.message : "Something went wrong",
-      },
-      { status: 400 }
-    );
+    return NextResponse.json({ message: "Error in the route.ts (FRAMES) " });
   }
-
-  return NextResponse.json({ message: "Frame details returned." });
 }

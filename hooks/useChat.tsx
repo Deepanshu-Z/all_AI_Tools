@@ -1,9 +1,7 @@
 "use client";
-
 import axios from "axios";
 import { useParams, useSearchParams } from "next/navigation";
-import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { useEffect, useState } from "react";
 
 export function useChat() {
   const [msgs, setMsgs] = useState<{ role: "user" | "bot"; content: string }[]>(
@@ -11,26 +9,40 @@ export function useChat() {
   );
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const projectId = useParams();
+  const frameId = searchParams.get("frameId");
+
+  useEffect(() => {
+    frameId && getFrameDetails();
+  }, [frameId]);
 
   const getFrameDetails = async () => {
-    const generateFrameId = () => {
-      return Math.floor(10000 + Math.random() * 90000);
-    };
+    try {
+      const response = await axios.post("/api/frame", {
+        frameId,
+        projectId,
+      });
 
-    const projectId = "e26d8f1a-42ca-429e-8404-e59a87abebdd";
-    const frameId = 1234;
-    const response = await axios.post(`/api/frame`, {
-      msgs,
-      projectId,
-      frameId,
-    });
+      console.log(response.data?.msgs[0].message);
+      setMsgs(response.data?.msgs[0].message);
+    } catch (error) {}
+  };
 
-    console.log("CHECK DB MSG UPDATED", response.statusText);
+  const updateMessage = async () => {
+    try {
+      const response = await axios.post("/api/chats", {
+        frameId,
+        msgs,
+      });
+      console.log(response, response.statusText);
+    } catch (error) {
+      console.log("error on client side update msg", error);
+    }
   };
 
   const sendMessage = async () => {
     if (!input.trim()) return;
-
     // add user message
     setMsgs((prev) => [...prev, { role: "user", content: input }]);
 
@@ -69,10 +81,11 @@ export function useChat() {
         // Otherwise add new bot message
         return [...prev, { role: "bot", content: botMessage }];
       });
-      getFrameDetails();
+      // getFrameDetails();
     }
 
     setLoading(false);
+    updateMessage();
   };
 
   return {
