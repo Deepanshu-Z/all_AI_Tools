@@ -68,11 +68,11 @@ const products = [
 
 export default function page() {
   return (
-    <div className="bg-gray-900 h-full">
+    <div className="bg-black">
       {/* Header */}
       <AppHeader />
       {/* Hero Section */}
-      <div className="relative isolate px-6 lg:px-8">
+      <div className="h-screen relative isolate px-6 lg:px-8">
         <div
           aria-hidden="true"
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
