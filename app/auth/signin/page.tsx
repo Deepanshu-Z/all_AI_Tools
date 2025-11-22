@@ -15,7 +15,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { signInInput, signInSchema } from "@/schemas/signInSchema";
+import { signInInput, signInSchema } from "@/valids/signInSchema";
 import { signIn } from "next-auth/react";
 
 export default function page() {

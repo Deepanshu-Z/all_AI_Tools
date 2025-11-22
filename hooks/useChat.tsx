@@ -7,8 +7,9 @@ export function useChat() {
   const [msgs, setMsgs] = useState<{ role: "user" | "bot"; content: string }[]>(
     []
   );
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [input, setInput] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [saveDB, setSaveDB] = useState<boolean>(false);
   const searchParams = useSearchParams();
   const projectId = useParams();
   const frameId = searchParams.get("frameId");
@@ -17,16 +18,20 @@ export function useChat() {
     frameId && getFrameDetails();
   }, [frameId]);
 
+  useEffect(() => {
+    if (!loading && msgs.length > 0) updateMessage();
+  }, [loading]);
+
   const getFrameDetails = async () => {
     try {
       const response = await axios.post("/api/frame", {
         frameId,
         projectId,
       });
-
-      console.log(response.data?.msgs[0].message);
       setMsgs(response.data?.msgs[0].message);
-    } catch (error) {}
+    } catch (error) {
+      console.log("Error in frame data getFrameDetails", error);
+    }
   };
 
   const updateMessage = async () => {
@@ -35,7 +40,6 @@ export function useChat() {
         frameId,
         msgs,
       });
-      console.log(response, response.statusText);
     } catch (error) {
       console.log("error on client side update msg", error);
     }
@@ -43,7 +47,6 @@ export function useChat() {
 
   const sendMessage = async () => {
     if (!input.trim()) return;
-    // add user message
     setMsgs((prev) => [...prev, { role: "user", content: input }]);
 
     const userQuery = input;
@@ -65,7 +68,9 @@ export function useChat() {
 
     while (true) {
       const { done, value } = await reader.read();
-      if (done) break;
+      if (done) {
+        break;
+      }
 
       botMessage += decoder.decode(value, { stream: true });
 
@@ -81,11 +86,8 @@ export function useChat() {
         // Otherwise add new bot message
         return [...prev, { role: "bot", content: botMessage }];
       });
-      // getFrameDetails();
     }
-
     setLoading(false);
-    updateMessage();
   };
 
   return {

@@ -5,26 +5,33 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   const { projectId, frameId } = await req.json();
+  const realProjectId = projectId.projectid;
   try {
     const findProject = await db
       .select()
       .from(projectsTable)
-      .where(eq(projectsTable.id, projectId));
-    if (!findProject) {
+      .where(eq(projectsTable.id, realProjectId));
+
+    if (findProject.length === 0) {
       const newProject = await db.insert(projectsTable).values({
-        id: projectId,
+        id: realProjectId,
         userId: 0,
       });
 
       const newFrame = await db.insert(framesTable).values({
         id: frameId,
-        projectId,
+        projectId: realProjectId,
       });
+
+      const newMessage = await db.insert(messagesTable).values({
+        frameId: frameId,
+      });
+      return NextResponse.json({ message: "Frame details updated" });
     } else {
       const frames = await db
         .select()
         .from(framesTable)
-        .where(eq(framesTable.projectId, projectId));
+        .where(eq(framesTable.projectId, realProjectId));
       const msgs = await db
         .select()
         .from(messagesTable)

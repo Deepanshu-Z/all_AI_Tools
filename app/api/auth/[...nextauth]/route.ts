@@ -18,6 +18,9 @@ export const authOptions = {
       },
       //@ts-ignore
       async authorize(credentials) {
+        const email = credentials?.email?.trim().replace(/"/g, "");
+        const password = credentials?.password || "";
+
         const user = await db
           .select()
           .from(usersTable)
