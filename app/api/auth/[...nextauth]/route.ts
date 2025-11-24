@@ -1,6 +1,6 @@
 import { db } from "@/config/db";
 import { usersTable } from "@/config/schema";
-import { compare } from "bcryptjs";
+import { compare, hash } from "bcryptjs";
 
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
@@ -11,7 +11,7 @@ import { email } from "zod";
 export const authOptions = {
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: "credentials",
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
@@ -24,15 +24,16 @@ export const authOptions = {
         const user = await db
           .select()
           .from(usersTable)
-          .where(eq(usersTable.email, credentials?.email!))
+          .where(eq(usersTable.email, email!))
           .limit(1);
+
         const foundUser = user[0];
         if (!foundUser) throw new Error("User not found");
-        const isValid = await compare(
-          credentials!.password,
-          foundUser.password
-        );
+
+        const isValid = await compare(password, foundUser.password);
+
         if (!isValid) throw new Error("Invalid password");
+
         return {
           id: foundUser.id,
           email: foundUser.email,
