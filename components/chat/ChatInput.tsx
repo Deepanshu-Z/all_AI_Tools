@@ -7,7 +7,7 @@ export function ChatInput() {
   const { input, setInput, sendMessage } = useChatContext();
 
   return (
-    <div>
+    <div className="">
       <Textarea
         value={input}
         placeholder="Type..."

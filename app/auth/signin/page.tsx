@@ -29,7 +29,6 @@ export default function page() {
 
   const onSubmit = async (data: signInInput) => {
     try {
-      console.log(data.email, data.password);
       const res = await signIn("credentials", {
         redirect: true,
         callbackUrl: "/",

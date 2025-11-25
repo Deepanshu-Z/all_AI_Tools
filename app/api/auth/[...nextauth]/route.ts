@@ -57,8 +57,6 @@ export const authOptions = {
       account: Account | null;
       profile?: Profile | undefined;
     }) {
-      console.log("🔥 GOOGLE SIGNIN CALLBACK");
-
       if (!user.email || !user.name) {
         console.error("User email or name is missing. Denying sign-in.");
         return false;
@@ -69,10 +67,8 @@ export const authOptions = {
           .select()
           .from(usersTable)
           .where(eq(usersTable.email, user.email));
-        console.log("FOUND USER@@@@@@@@@@@@@@", foundUser, foundUser.length);
         // This check is now correct!
         if (foundUser.length == 0) {
-          console.log("Creating new user...");
           await db.insert(usersTable).values({
             username: user.name,
             password: "null",

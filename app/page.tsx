@@ -8,61 +8,72 @@ import {
 } from "@/components/ui/card";
 import AppHeader from "./_components/AppHeader";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const products = [
   {
-    productName: "AI Image Generation",
+    productName: "Text AI",
     productDescription:
-      "Create high-quality images for branding, marketing, UI, art and creative design.",
-    imageUrl: "https://cdn-icons-png.flaticon.com/512/12394/12394665.png",
+      "Have a chat with our advance AI model and ask any question around.",
+    imageUrl:
+      "https://tse2.mm.bing.net/th/id/OIP.9aTJvg9m--4Ysldl0XNU_gHaEK?pid=Api&P=0&h=180",
+    link: "/generalai",
   },
   {
     productName: "AI Video Generation",
     productDescription:
       "Generate full videos from text, audio or images with cinematic quality.",
     imageUrl: "https://cdn-icons-png.flaticon.com/512/11622/11622566.png",
+    link: "http:/localhost/3000/generalai",
   },
   {
     productName: "AI Coding Assistant",
     productDescription:
       "Write, fix, refactor and generate code automatically using advanced LLMs.",
     imageUrl: "https://cdn-icons-png.flaticon.com/512/10885/10885228.png",
+    link: "http:/localhost/3000/generalai",
   },
   {
     productName: "AI Voice Generation",
     productDescription:
       "Generate ultra-realistic voices for content, characters, ads and narration.",
     imageUrl: "https://cdn-icons-png.flaticon.com/512/12814/12814457.png",
+    link: "http:/localhost/3000/generalai",
   },
   {
     productName: "AI Speech-to-Text",
     productDescription:
       "Convert any audio or video into accurate transcription instantly.",
     imageUrl: "https://cdn-icons-png.flaticon.com/512/12791/12791191.png",
+    link: "http:/localhost/3000/generalai",
   },
   {
     productName: "AI Search Engine",
     productDescription:
       "Research anything with real-time data, citations and fast answers.",
     imageUrl: "https://cdn-icons-png.flaticon.com/512/10828/10828496.png",
+    link: "http:/localhost/3000/generalai",
   },
   {
     productName: "AI Automation & Agents",
     productDescription:
       "Automate workflows, build agents and let AI complete multi-step tasks.",
     imageUrl: "https://cdn-icons-png.flaticon.com/512/12606/12606961.png",
+    link: "http:/localhost/3000/generalai",
   },
   {
     productName: "AI Document Intelligence",
     productDescription:
       "Analyze large PDFs, contracts, tables and extract structured insights.",
     imageUrl: "https://cdn-icons-png.flaticon.com/512/10470/10470718.png",
+    link: "http:/localhost/3000/generalai",
   },
   {
     productName: "AI Chat & Assistants",
     productDescription:
       "Conversational LLMs that help in learning, support and productivity.",
     imageUrl: "https://cdn-icons-png.flaticon.com/512/10836/10836257.png",
+    link: "http:/localhost/3000/generalai",
   },
 ];
 
@@ -154,7 +165,7 @@ export default function page() {
                   variant={"default"}
                   className="w-full bg-indigo-500 cursor-pointer hover:bg-indigo-700"
                 >
-                  View More
+                  <Link href={product.link!}>View More</Link>
                 </Button>
               </CardContent>
             </Card>
